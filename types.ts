@@ -1,4 +1,3 @@
-
 export enum FontSize {
   SMALL = 'small',
   MEDIUM = 'medium',
@@ -11,11 +10,10 @@ export enum MarginSize {
   LOOSE = 'loose'
 }
 
-export enum AspectRatio {
-  RATIO_16_9 = '16:9',
-  RATIO_4_3 = '4:3',
-  RATIO_1_1 = '1:1',
-  FREE = 'Free'
+export enum CardSize {
+  SQUARE = '1:1',      // 1080x1080 正方形
+  PORTRAIT = '3:4',    // 1080x1440 竖图（推荐）
+  LONG = 'auto'        // 自适应长图
 }
 
 export interface AppConfig {
@@ -23,20 +21,28 @@ export interface AppConfig {
   signature: string;
   content: string;
   images: string[];
-  templateColor: string;
-  aspectRatio: AspectRatio;
+  templateId: string;
+  cardSize: CardSize;
   fontFamily: string;
   fontSize: FontSize;
   margin: MarginSize;
   logo?: string;
-  articleLink?: string;
-  qrCodeImage?: string;
+  // 文章二维码
+  articleLink: string;
+  articleQrText: string;
+  // 工具推广二维码
+  toolLink: string;
+  toolQrText: string;
+  showToolQr: boolean;
 }
 
 export interface Template {
   id: string;
   name: string;
+  description: string;
   background: string;
+  cardBg: string;
   text: string;
   secondary: string;
+  accent: string;
 }
