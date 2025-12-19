@@ -31,13 +31,13 @@ export const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
     };
 
     const hasArticleQr = config.articleLink?.trim();
-    const hasToolQr = config.showToolQr && config.toolLink?.trim();
-    const hasAnyQr = hasArticleQr || hasToolQr;
+    // 工具推广二维码始终显示
+    const hasToolQr = true;
 
     return (
-        <div className="flex-1 bg-gradient-to-br from-slate-100 to-slate-200 p-8 overflow-y-auto min-w-0 flex flex-col items-center">
+        <div className="flex-1 bg-gradient-to-br from-slate-100 to-slate-200 p-8 min-w-0 flex flex-col items-center overflow-hidden">
             {/* 标题区域 */}
-            <div className="mb-6 w-full max-w-md flex items-center justify-between">
+            <div className="mb-6 w-full max-w-md flex items-center justify-between flex-shrink-0">
                 <div>
                     <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                         🎴 卡片预览
@@ -52,24 +52,27 @@ export const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
                 </div>
             </div>
 
-            {/* 卡片预览容器 */}
+            {/* 可滚动的卡片区域 */}
+            <div className="flex-1 w-full max-w-md overflow-y-auto min-h-0">
+            {/* 卡片预览容器 - 长图模式不限制高度 */}
             <div
-                className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
-                style={getCardContainerStyle()}
+                className="w-full bg-white rounded-2xl shadow-2xl overflow-visible"
+                style={config.cardSize === CardSize.LONG ? {} : getCardContainerStyle()}
             >
                 {/* 实际导出区域 */}
                 <div
                     ref={previewRef}
-                    className={`w-full h-full flex flex-col ${config.fontFamily}`}
+                    className={`w-full flex flex-col ${config.fontFamily}`}
                     style={{
                         background: currentTemplate.background,
+                        minHeight: config.cardSize === CardSize.LONG ? 'auto' : '100%',
                     }}
                 >
                     {/* 内容主体区域 */}
                     <div className="flex-1 p-5 flex flex-col">
                         {/* 内容卡片 */}
                         <div
-                            className="flex-1 rounded-2xl shadow-lg overflow-hidden flex flex-col"
+                            className="flex-1 rounded-2xl shadow-lg flex flex-col"
                             style={{
                                 background: currentTemplate.cardBg,
                                 padding: marginValue
@@ -77,7 +80,7 @@ export const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
                         >
                             {/* 富文本内容 */}
                             <div
-                                className="rich-content-wrapper prose prose-slate max-w-none flex-1 overflow-hidden"
+                                className="rich-content-wrapper prose prose-slate max-w-none flex-1"
                                 style={{
                                     fontSize: fontSizeValue,
                                     color: currentTemplate.text
@@ -86,45 +89,41 @@ export const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
                             />
 
                             {/* 二维码区域 */}
-                            {hasAnyQr && (
-                                <div className="mt-6 pt-5 border-t border-slate-100">
-                                    <div className={`flex ${hasArticleQr && hasToolQr ? 'justify-between' : 'justify-center'} items-end gap-4`}>
-                                        {/* 文章二维码 */}
-                                        {hasArticleQr && (
-                                            <div className="flex flex-col items-center gap-2">
-                                                <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-100">
-                                                    <img
-                                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(config.articleLink)}&bgcolor=ffffff&margin=0`}
-                                                        alt="文章二维码"
-                                                        className="w-20 h-20"
-                                                        crossOrigin="anonymous"
-                                                    />
-                                                </div>
-                                                <p className="text-xs text-slate-500 font-medium text-center max-w-[100px]">
-                                                    {config.articleQrText || '扫码看全文'}
-                                                </p>
+                            <div className="mt-6 pt-5 border-t border-slate-100">
+                                <div className={`flex ${hasArticleQr ? 'justify-between' : 'justify-center'} items-end gap-4`}>
+                                    {/* 文章二维码 */}
+                                    {hasArticleQr && (
+                                        <div className="flex flex-col items-center gap-2">
+                                            <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-100">
+                                                <img
+                                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(config.articleLink)}&bgcolor=ffffff&margin=0`}
+                                                    alt="文章二维码"
+                                                    className="w-20 h-20"
+                                                    crossOrigin="anonymous"
+                                                />
                                             </div>
-                                        )}
+                                            <p className="text-xs text-slate-500 font-medium text-center max-w-[100px]">
+                                                {config.articleQrText || '扫码看全文'}
+                                            </p>
+                                        </div>
+                                    )}
 
-                                        {/* 工具推广二维码 */}
-                                        {hasToolQr && (
-                                            <div className="flex flex-col items-center gap-2">
-                                                <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-100">
-                                                    <img
-                                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(config.toolLink)}&bgcolor=ffffff&margin=0`}
-                                                        alt="工具二维码"
-                                                        className="w-20 h-20"
-                                                        crossOrigin="anonymous"
-                                                    />
-                                                </div>
-                                                <p className="text-xs font-medium text-center max-w-[100px]" style={{ color: currentTemplate.accent }}>
-                                                    {config.toolQrText || `${TOOL_BRAND_NAME}制作`}
-                                                </p>
-                                            </div>
-                                        )}
+                                    {/* 工具推广二维码 - 始终显示 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-100">
+                                            <img
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(TOOL_PROMO_LINK)}&bgcolor=ffffff&margin=0`}
+                                                alt="卡片君"
+                                                className="w-20 h-20"
+                                                crossOrigin="anonymous"
+                                            />
+                                        </div>
+                                        <p className="text-xs font-medium text-center max-w-[100px]" style={{ color: currentTemplate.accent }}>
+                                            {TOOL_BRAND_NAME}制作
+                                        </p>
                                     </div>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
 
@@ -163,9 +162,10 @@ export const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
                     </div>
                 </div>
             </div>
+            </div>
 
             {/* 底部提示 */}
-            <p className="mt-6 text-xs text-slate-400 text-center">
+            <p className="mt-6 text-xs text-slate-400 text-center flex-shrink-0">
                 提示：导出的图片尺寸为 1080×1440 像素（3倍清晰度）
             </p>
         </div>

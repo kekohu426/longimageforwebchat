@@ -30,10 +30,6 @@ export interface AppConfig {
   // 文章二维码
   articleLink: string;
   articleQrText: string;
-  // 工具推广二维码
-  toolLink: string;
-  toolQrText: string;
-  showToolQr: boolean;
 }
 
 export interface Template {

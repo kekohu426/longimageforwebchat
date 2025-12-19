@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import * as htmlToImage from 'html-to-image';
 import { AppConfig, FontSize, MarginSize, CardSize } from './types';
-import { TEMPLATES, FONTS, TOOL_PROMO_LINK } from './constants';
+import { TEMPLATES, FONTS } from './constants';
 import { callGLM, stringifyError, preprocessImagesInHtml, extractTextFromHtml, cleanupHtmlContent } from './utils';
 import { EditorPanel } from './components/EditorPanel';
 import { PreviewCanvas } from './components/PreviewCanvas';
@@ -20,10 +20,7 @@ const App: React.FC = () => {
     margin: MarginSize.STANDARD,
     logo: 'https://api.dicebear.com/7.x/bottts/svg?seed=card',
     articleLink: '',
-    articleQrText: '',
-    toolLink: TOOL_PROMO_LINK,
-    toolQrText: '',
-    showToolQr: true
+    articleQrText: ''
   });
 
   const [isExporting, setIsExporting] = useState(false);
@@ -34,7 +31,7 @@ const App: React.FC = () => {
   const [editorKey, setEditorKey] = useState(0);
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [isFormatting, setIsFormatting] = useState(false);
-  const [geminiApiKey, setGeminiApiKey] = useState('29108ee8ab0b4e09a4e12a74f0d536b2.c13tNpEYzmdvPZ8U');
+  const [geminiApiKey, setGeminiApiKey] = useState('');
   const previewRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
 

@@ -175,62 +175,25 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <div>
                     <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                         <QrCode className="w-3.5 h-3.5" />
-                        二维码设置
+                        文章二维码
                     </label>
 
-                    <div className="space-y-3">
-                        {/* 文章二维码 */}
-                        <div className="p-3 bg-slate-50 rounded-xl space-y-2">
-                            <label className="text-xs font-medium text-slate-700">📱 文章二维码</label>
-                            <input
-                                type="url"
-                                value={config.articleLink}
-                                onChange={(e) => setConfig(prev => ({ ...prev, articleLink: e.target.value }))}
-                                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-slate-900 outline-none"
-                                placeholder="文章链接"
-                            />
-                            <input
-                                type="text"
-                                value={config.articleQrText}
-                                onChange={(e) => setConfig(prev => ({ ...prev, articleQrText: e.target.value }))}
-                                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-slate-900 outline-none"
-                                placeholder="二维码下方文字（默认：扫码看全文）"
-                            />
-                        </div>
-
-                        {/* 工具推广二维码 */}
-                        <div className="p-3 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl space-y-2 border border-amber-100">
-                            <div className="flex items-center justify-between">
-                                <label className="text-xs font-medium text-amber-800">🎴 {TOOL_BRAND_NAME}推广</label>
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={config.showToolQr}
-                                        onChange={(e) => setConfig(prev => ({ ...prev, showToolQr: e.target.checked }))}
-                                        className="sr-only peer"
-                                    />
-                                    <div className="w-9 h-5 bg-slate-200 peer-focus:ring-2 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
-                                </label>
-                            </div>
-                            {config.showToolQr && (
-                                <>
-                                    <input
-                                        type="url"
-                                        value={config.toolLink}
-                                        onChange={(e) => setConfig(prev => ({ ...prev, toolLink: e.target.value }))}
-                                        className="w-full px-3 py-2 bg-white border border-amber-200 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 outline-none"
-                                        placeholder="工具链接"
-                                    />
-                                    <input
-                                        type="text"
-                                        value={config.toolQrText}
-                                        onChange={(e) => setConfig(prev => ({ ...prev, toolQrText: e.target.value }))}
-                                        className="w-full px-3 py-2 bg-white border border-amber-200 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 outline-none"
-                                        placeholder={`默认：${TOOL_BRAND_NAME}制作`}
-                                    />
-                                </>
-                            )}
-                        </div>
+                    <div className="p-3 bg-slate-50 rounded-xl space-y-2">
+                        <input
+                            type="url"
+                            value={config.articleLink}
+                            onChange={(e) => setConfig(prev => ({ ...prev, articleLink: e.target.value }))}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-slate-900 outline-none"
+                            placeholder="输入文章链接"
+                        />
+                        <input
+                            type="text"
+                            value={config.articleQrText}
+                            onChange={(e) => setConfig(prev => ({ ...prev, articleQrText: e.target.value }))}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-slate-900 outline-none"
+                            placeholder="二维码下方文字（默认：扫码看全文）"
+                        />
+                        <p className="text-[10px] text-slate-400">填写后将在卡片底部显示文章二维码</p>
                     </div>
                 </div>
 
@@ -247,8 +210,17 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                             value={geminiApiKey}
                             onChange={(e) => setGeminiApiKey(e.target.value)}
                             className="w-full px-3 py-2 bg-white/70 border border-violet-200 rounded-lg text-xs focus:ring-2 focus:ring-violet-500 outline-none"
-                            placeholder="智谱 GLM API Key"
+                            placeholder="输入智谱 GLM API Key"
                         />
+                        <div className="text-[10px] text-violet-600 bg-violet-50 rounded-lg p-2 space-y-1">
+                            <p className="font-medium">获取 API Key：</p>
+                            <ol className="list-decimal list-inside space-y-0.5 text-violet-500">
+                                <li>访问 <a href="https://open.bigmodel.cn/" target="_blank" rel="noopener noreferrer" className="text-violet-700 underline hover:text-violet-900">智谱开放平台</a></li>
+                                <li>注册/登录账号</li>
+                                <li>进入「API Keys」页面</li>
+                                <li>创建并复制 Key</li>
+                            </ol>
+                        </div>
                         <button
                             onClick={generateSummary}
                             disabled={isGeneratingSummary || !config.content.trim() || !geminiApiKey.trim()}
@@ -261,7 +233,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                             )}
                             {isGeneratingSummary ? '正在思考...' : '生成智能摘要'}
                         </button>
-                        <p className="text-[10px] text-violet-600 text-center">提取文章核心要点，生成营销卡片</p>
+                        <p className="text-[10px] text-violet-500 text-center">提取文章核心要点，生成营销卡片</p>
                     </div>
                 </div>
             </div>

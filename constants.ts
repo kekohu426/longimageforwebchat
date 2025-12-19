@@ -69,6 +69,6 @@ export const FONTS = [
   { name: '等宽字体', value: 'font-mono' }
 ];
 
-// 卡片君工具推广链接（占位）
-export const TOOL_PROMO_LINK = 'https://kapianjun.com';
+// 卡片君工具推广链接（固定）
+export const TOOL_PROMO_LINK = 'https://longimageforwebchat.vercel.app/';
 export const TOOL_BRAND_NAME = '卡片君';
