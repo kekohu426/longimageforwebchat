@@ -43,11 +43,43 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
     return (
         <div className="w-80 bg-white border-l border-slate-200 flex flex-col h-screen">
             {/* 头部 */}
-            <div className="p-5 border-b border-slate-100">
-                <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                    🎴 {TOOL_BRAND_NAME}
-                </h1>
-                <p className="text-sm text-slate-500 mt-1">朋友圈营销卡片生成器</p>
+            <div className="p-5 border-b border-slate-100 flex justify-between items-start">
+                <div>
+                    <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        🎴 {TOOL_BRAND_NAME}
+                    </h1>
+                    <p className="text-sm text-slate-500 mt-1">朋友圈营销卡片生成器</p>
+                </div>
+                <div className="relative group ml-2 flex flex-col items-center cursor-pointer">
+                    <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 p-0.5 transition-transform hover:shadow-md">
+                        <img 
+                            src="/feedback-qr.jpg" 
+                            alt="反馈二维码" 
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.parentElement?.classList.add('flex', 'items-center', 'justify-center');
+                                const icon = document.createElement('div');
+                                icon.innerHTML = '<svg class="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>';
+                                e.currentTarget.parentElement?.appendChild(icon.firstChild!);
+                            }}
+                        />
+                    </div>
+                    <span className="text-[10px] text-slate-400 mt-1 scale-90 origin-top">反馈建议</span>
+
+                    {/* 悬停放大显示 */}
+                    <div className="absolute top-0 right-full mr-2 w-48 bg-white p-3 rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 origin-top-right transform translate-x-2 group-hover:translate-x-0">
+                        <div className="aspect-square bg-slate-50 rounded-lg overflow-hidden mb-2">
+                            <img 
+                                src="/feedback-qr.jpg" 
+                                alt="反馈二维码大图" 
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                        <p className="text-xs text-center text-slate-600 font-medium">扫码反馈产品建议</p>
+                        <p className="text-[10px] text-center text-slate-400 mt-0.5">感谢您的支持！</p>
+                    </div>
+                </div>
             </div>
 
             {/* 可滚动设置区域 */}
